@@ -11,7 +11,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText, Grid,
+  ListItemText,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
