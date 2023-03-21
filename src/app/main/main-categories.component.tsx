@@ -75,6 +75,11 @@ const images = [
 ];
 
 export default function MainCategories() {
+
+
+
+
+
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }}>
       <Typography variant="h4" align="center" component="h2">
