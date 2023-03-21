@@ -17,7 +17,7 @@ type PropsType = {
 
 const UserInfoForm = ({handleSubmit} : PropsType) => {
 
-  const [disabled, setDisabled] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(true);
 
 
   return (
@@ -101,7 +101,7 @@ const UserInfoForm = ({handleSubmit} : PropsType) => {
                     autoComplete="address"
                     disabled={disabled}
                 />
-                <FormControlLabel control={<Checkbox defaultChecked />} label="Update info" onChange={()=> setDisabled(!disabled)} />
+                <FormControlLabel control={<Checkbox  />} label="Update info" onChange={()=> setDisabled(!disabled)} />
                 <Button
                 type="submit"
                 fullWidth
