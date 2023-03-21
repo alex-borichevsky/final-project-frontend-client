@@ -1,7 +1,7 @@
 import {Route, Routes} from "react-router-dom";
-import UserPage from "./UserPage";
-import UserOrdersPage from "./UserOrdersPage";
-import UserCartPage from "./UserCartPage";
+import UserPage from "./user.page";
+import UserOrdersPage from "./user-orders.page";
+import UserCartPage from "./user-cart.page";
 import React, {FC} from "react";
 
 const UsersRoutes: FC = () => {
