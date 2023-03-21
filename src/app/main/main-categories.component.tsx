@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
-import { Grid, Typography, Container,ButtonBase, Box  } from '@mui/material';
+import { Grid, Typography, Container, ButtonBase, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const ImageBackdrop = styled('div')(({ theme }) => ({
   position: 'absolute',
@@ -73,23 +74,24 @@ const images = [
   }
 ];
 
-export default function Categories() {
+export default function MainCategories() {
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }}>
       <Typography variant="h4" align="center" component="h2">
         For all tastes and all desires
       </Typography>
-      <Grid 
+      <Grid
         container
-        sx={{ 
-          mt: 8, 
-          display: 'flex', 
+        sx={{
+          mt: 8,
+          display: 'flex',
           flexWrap: 'wrap',
           width: '100%',
           justifyContent: 'space-around'
         }}
       >
         {images.map((image) => (
+
           <ImageIconButton
             key={image.title}
             style={{
@@ -122,14 +124,22 @@ export default function Categories() {
                 color: 'common.white',
               }}
             >
-              <Typography
-                component="h3"
-                variant="h6"
-                color="inherit"
-                className="imageTitle"
+              <Link 
+                to={`products/categories/${image.title}`} 
+                style={{ 
+                  textDecoration: 'none', 
+                  color: 'white' 
+                }}
               >
-                {image.title}
-              </Typography>
+                <Typography
+                  component="h3"
+                  variant="h6"
+                  color="inherit"
+                  className="imageTitle"
+                >
+                  {image.title}
+                </Typography>
+              </Link>
             </Box>
           </ImageIconButton>
         ))}

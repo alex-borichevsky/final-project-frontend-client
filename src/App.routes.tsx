@@ -13,23 +13,22 @@ const PrivateRoute: FC<{ element: any }> = ({ element: Element }) => {
 };
 
 // ======= public route ======= //
-// const PublicRoute: FC<{ element: any }> = ({ element: Element }) => (
-//   <Suspense fallback={<div />}>
-//     <Element />
-//   </Suspense>
-// );
+const PublicRoute: FC<{ element: any }> = ({ element: Element }) => (
+  <Suspense fallback={<div />}>
+    <Element />
+  </Suspense>
+);
 
 // ======= pages ======= //
-const UsersPage = React.lazy(() => import("./app/main/Main.page"))
+const MainPage = React.lazy(() => import("app/main"));
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* PRIVATE */}
-      <Route path={"/main/*"} element={<PrivateRoute element={UsersPage} />} />
+      <Route path={"/app/*"} element={<PublicRoute element={MainPage} />} />
 
       {/* DEFAULT */}
-      <Route path='*' element={<Navigate to="/main" />} />
+      <Route path='*' element={<Navigate to="/app" />} />
     </Routes>
   );
 };

@@ -1,7 +1,13 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 
-export default function Intro() {
-  const backgroundImage = 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1992&q=80';
+type PropsType = {
+  backgroundImage: string;
+  mainTitle: string | undefined;
+  subTitle: string | undefined;
+}
+
+export default function AppIntroSection( {backgroundImage, mainTitle, subTitle } : PropsType ) {
+  // const backgroundImage = 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1992&q=80';
 
   return (
     <Grid
@@ -25,19 +31,20 @@ export default function Intro() {
         }}
       >
         <Typography align="center" variant="h2" >
-          Furniture for your dream home
+          {/* Furniture for your dream home */}
+          {mainTitle}
         </Typography>
-        <Typography
-          color="inherit"
-          align="center"
-          variant="h5"
-          sx={{ mb: 4, mt: { xs: 4, sm: 10 } }}
-        >
-          Enjoy secret offers up to -70% off the best luxury hotels every Sunday.
-        </Typography>
-        <Typography variant="body2" color="inherit" sx={{ mt: 2 }}>
-          Discover the experience
-        </Typography>
+        {subTitle && (
+          <Typography
+            color="inherit"
+            align="center"
+            variant="h5"
+            sx={{ mb: 4, mt: { xs: 4, sm: 10 } }}
+          >
+            {/* Enjoy secret offers up to -70% off the best luxury hotels every Sunday. */}
+            {subTitle}
+          </Typography>
+        )}
         <Box
           sx={{
             position: 'absolute',
