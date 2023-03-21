@@ -1,6 +1,6 @@
 import {Grid} from "@mui/material";
 import React from "react";
-import ProductCard from "./card";
+import ProductCard from "./product-card";
 
 const wrapperStyle = {
     display: 'flex',

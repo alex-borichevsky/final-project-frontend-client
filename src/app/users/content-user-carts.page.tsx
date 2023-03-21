@@ -1,6 +1,6 @@
 import {Typography} from "@mui/material";
 import React from "react";
-import CartTable from "./CartTable";
+import CartTable from "./cart-table";
 
 export default function ContentUserCartsPage() {
     return (
