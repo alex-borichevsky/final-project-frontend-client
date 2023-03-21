@@ -7,6 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
+
 
 interface Column {
     id: 'productName' | 'price' | 'quantity';
@@ -90,6 +94,7 @@ export default function CartTable() {
                                     {column.label}
                                 </TableCell>
                             ))}
+                            <TableCell/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -108,6 +113,10 @@ export default function CartTable() {
                                                 </TableCell>
                                             );
                                         })}
+                                        <TableCell style={{textAlign: 'center'}}>
+                                            <AddIcon/>
+                                            <RemoveIcon/>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}

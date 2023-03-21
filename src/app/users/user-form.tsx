@@ -17,8 +17,6 @@ type PropsType = {
 
 const UserForm = ({handleSubmit} : PropsType) => {
 
-    const [disabled, setDisabled] = React.useState(false);
-
 
     return (
         <Grid container sx={{justifyContent: 'center'}}>
@@ -59,7 +57,6 @@ const UserForm = ({handleSubmit} : PropsType) => {
                             name="current_password"
                             autoComplete="current_password"
                             autoFocus
-                            disabled={disabled}
                             type='password'
                         />
                         <TextField
@@ -70,7 +67,6 @@ const UserForm = ({handleSubmit} : PropsType) => {
                             label="new password"
                             name="new_password"
                             autoComplete="new_password"
-                            disabled={disabled}
                             type='password'
                         />
                         <TextField
@@ -81,10 +77,8 @@ const UserForm = ({handleSubmit} : PropsType) => {
                             label="confirm password"
                             id="confirm_password"
                             autoComplete="confirm_password"
-                            disabled={disabled}
                             type='password'
                         />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Update info" onChange={()=> setDisabled(!disabled)} />
                         <Button
                             type="submit"
                             fullWidth
