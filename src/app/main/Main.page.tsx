@@ -1,14 +1,16 @@
-import AppBar from "./AppBar.component";
-import AppFooter from "./AppFooter.component";
-import Categories from "./Categories.component";
-import Intro from "./Intro.component";
+import AppBar from "components/app-bar.component";
+import AppFooter from "components/app-footer.component";
+import AppIntroSection from "components/app-intro-section.component";
+import MainCategories from "./main-categories.component";
 
 function MainPage() {
   return (
     <>
       <AppBar/>
-      <Intro />
-      <Categories />
+      <AppIntroSection 
+        backgroundImage='https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1992&q=80' mainTitle='Furniture for your dream home' 
+        subTitle='Enjoy secret offers up to -70% off the best luxury hotels every Sunday'/>
+      <MainCategories />
       <AppFooter />
     </>
   );
