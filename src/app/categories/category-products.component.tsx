@@ -1,7 +1,23 @@
 import { Grid } from "@mui/material";
+import { getProductsByCategoryId } from "app/products/store/products.actions";
+import { useProductsSelector } from "app/products/store/products.selectors";
 import CardProduct from "components/card-product.component";
+import { useAppDispatch } from "hooks/redux";
+import { useEffect } from "react";
 
-export default function CategoryProducts() {
+type Props = {
+  categoryId: number;
+}
+
+export default function CategoryProducts({categoryId} : Props) {
+  const dispatch = useAppDispatch();
+  const {products} = useProductsSelector();
+
+  useEffect(() => {
+    dispatch(getProductsByCategoryId({categoryId: categoryId}));
+  }, [categoryId])
+
+
   return (
     <Grid 
       container
@@ -13,15 +29,16 @@ export default function CategoryProducts() {
         padding: 5
       }}
     >
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
-      <CardProduct/>
+      {products.map((product) => (
+        <CardProduct
+          key={product.created}
+          name={product.name}
+          description={product.description}
+          price={product.price}
+          brand={product.brand}
+          image={''}
+        />
+      ))}
     </Grid>
   )
 }

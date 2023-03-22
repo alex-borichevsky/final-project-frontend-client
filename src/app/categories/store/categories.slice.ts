@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getCategories} from "./categories.actions";
+import {getCategories, getCategoryById} from "./categories.actions";
 import {CategoryState} from "../types/category-state.type";
 
 const initialState: CategoryState = {
@@ -32,6 +32,18 @@ const categoriesSlice = createSlice({
             .addCase(getCategories.rejected, (state, action: any & { payload: any }) => {
                 state.pending.categories = false;
                 state.errors.categories = action.payload.message;
+            })
+            .addCase(getCategoryById.pending, (state) => {
+                state.pending.category = true;
+                state.errors.category = null;
+            })
+            .addCase(getCategoryById.fulfilled, (state, { payload }) => {
+                state.pending.category = false;
+                state.category = payload;
+            })
+            .addCase(getCategoryById.rejected, (state, action: any & { payload: any }) => {
+                state.pending.category = false;
+                state.errors.category = action.payload.message;
             })
     },
 });

@@ -15,7 +15,7 @@ const CategoriesPage = React.lazy(() => import("app/categories/categories-view.p
 const ProdctRoutes: FC = () => {
   return (
     <Routes>
-      <Route path={"/:categoryName"} element={<Suspended element={CategoriesPage} />} />
+      <Route path={"/:categoryId"} element={<Suspended element={CategoriesPage} />} />
 
       {/* DEFAULT */}
       <Route path='*' element={<Navigate to="/" />} />
