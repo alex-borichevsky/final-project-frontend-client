@@ -1,19 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {CategoriesState} from "../types/user-state.type";
+import {createSlice} from "@reduxjs/toolkit";
 import {getCategories} from "./categories.actions";
+import {CategoryState} from "../types/category-state.type";
 
-const initialState: CategoriesState = {
+const initialState: CategoryState = {
     categories: [],
     category: null,
     pending: {
         categories: false,
-        category: false,
+        category: false
     },
     errors: {
         categories: null,
-        category: null,
-    },
-};
+        category: null
+    }
+}
 
 const categoriesSlice = createSlice({
     name: 'categories',
@@ -21,7 +21,6 @@ const categoriesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // ============ GET USERS ============ //
             .addCase(getCategories.pending, (state) => {
                 state.pending.categories = true;
                 state.errors.categories = null;
@@ -37,4 +36,4 @@ const categoriesSlice = createSlice({
     },
 });
 
-export default categoriesSlice;
+export default categoriesSlice.reducer;

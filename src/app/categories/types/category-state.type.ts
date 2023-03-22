@@ -1,9 +1,9 @@
 import { BaseState } from "types/base-state.type";
-import { CategoriesDto } from "./category-dto.type";
+import {CategoryDto} from "./category-dto.type";
 
-export interface CategoriesState extends BaseState {
-  categories: CategoriesDto[];
-  category: CategoriesDto | null;
+export interface CategoryState extends BaseState {
+  categories: CategoryDto[];
+  category: CategoryDto | null;
   pending: {
     categories: boolean;
     category: boolean;

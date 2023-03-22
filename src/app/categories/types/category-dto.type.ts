@@ -1,7 +1,6 @@
-import { UUIDDto } from "types/uuid-dto.type";
+import {IdDto} from "../../../types/id-dto.type";
 
-
-export interface CategoriesDto extends UUIDDto {
+export interface CategoryDto extends IdDto  {
   name: string;
   description: string;
 }

@@ -1,5 +1,5 @@
 export interface UUIDDto {
-  id: number;
+  id: string;
 
   created: number;
 
