@@ -2,9 +2,21 @@ import AppBar from "../../components/app-bar.component";
 import AppFooter from "../../components/app-footer.component";
 import MainCategories from "./main-categories.component";
 import AppIntroSection from "../../components/app-intro-section.component";
+import {useEffect} from "react";
+import { getCategories} from "../categories/store/categories.actions";
+import {useAppDispatch} from "../../hooks/redux";
+import {useCategorySelector} from "../categories/store/categories.selectors";
 
 export default function MainPage() {
-  return (
+
+    const dispatch = useAppDispatch();
+    const {categories} = useCategorySelector();
+
+    useEffect(() => {
+        dispatch(getCategories());
+    }, [dispatch])
+
+    return (
     <>
       <AppBar/>
       <AppIntroSection 
@@ -13,6 +25,7 @@ export default function MainPage() {
         subTitle="Enjoy secret offers up to -70% off the best luxury hotels every Sunday"
       />
       <MainCategories />
+        {categories.map((i) => <div>{i.name}</div> )}
       <AppFooter />
     </>
   );
