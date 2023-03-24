@@ -1,8 +1,10 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import categoryReducer from './app/categories/store/categories.slice';
+import authReducer from './app/auth/store/auth.slice'
 
 const rootReducer = combineReducers({
     categoryReducer,
+    authReducer
 })
 
 

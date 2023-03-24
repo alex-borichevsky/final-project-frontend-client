@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -7,6 +7,7 @@ import MuiToolbar from '@mui/material/Toolbar';
 import MuiAppBar from '@mui/material/AppBar';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Cookies from 'js-cookie';
 
 const rightLink = {
   fontSize: 16,
@@ -17,6 +18,11 @@ const rightLink = {
 export default function AppBar() {
   const [auth, setAuth] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    if (Cookies.get('access_token'))
+      setAuth(true);
+  })
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -60,7 +66,14 @@ export default function AppBar() {
                   onClose={handleClose}
                 >
                   <MenuItem onClick={handleClose}>Account</MenuItem>
-                  <MenuItem onClick={handleClose}>Log out</MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link 
+                      underline="none"
+                      sx={{color: 'black'}}
+                      href="/app/auth/log-out">
+                      Log out
+                    </Link>
+                  </MenuItem>
                 </Menu>
               </>
               :
