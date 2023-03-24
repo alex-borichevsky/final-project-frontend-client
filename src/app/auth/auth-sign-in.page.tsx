@@ -20,7 +20,7 @@ export default function AuthSignInPage() {
 
     dispatch(signInUser({dto}));
     event.currentTarget.reset();
-    navigate('/');
+    navigate('/', {replace: true});
   }
 
   return (

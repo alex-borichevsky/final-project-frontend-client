@@ -1,7 +1,7 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import categoryReducer from './app/categories/store/categories.slice';
-
-import productsReducer from './app/products/store/products.slice'
+import authReducer from './app/auth/store/auth.slice';
+import productsReducer from './app/products/store/products.slice';
 
 const rootReducer = combineReducers({
     categoryReducer,

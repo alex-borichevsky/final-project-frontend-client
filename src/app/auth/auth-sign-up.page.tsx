@@ -22,7 +22,7 @@ export default function AuthSignUpPage() {
 
     dispatch(registerUser({dto}));
     event.currentTarget.reset();
-    navigate('/');
+    navigate('/', {replace: true});
   }
 
   return (
