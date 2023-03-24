@@ -107,7 +107,7 @@ const Form = ({ title, nameBtn, handleSubmit, isSignIn }: FormPropsType) => {
                 borderRadius: '20px',
                 backgroundColor: '#6e5f55',
                 '&:hover': {
-                  backgroundColor: '#c9b4a5',
+                  backgroundColor: '#998374',
                   color: 'white',
                 }
               }}
