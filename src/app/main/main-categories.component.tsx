@@ -1,6 +1,10 @@
 import { styled } from '@mui/material/styles';
 import { Grid, Typography, Container, ButtonBase, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+import {useEffect} from "react";
+import { getCategories} from "../categories/store/categories.actions";
+import {useAppDispatch} from "../../hooks/redux";
+import {useCategorySelector} from "../categories/store/categories.selectors";
 
 const ImageBackdrop = styled('div')(({ theme }) => ({
   position: 'absolute',
@@ -50,35 +54,13 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
   },
 }));
 
-// Request for categories
-const images = [
-  {
-    url: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    title: 'Kitchen'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    title: 'Living room'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1575501265016-ae78c708a09c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1780&q=80',
-    title: 'Upholsterd furniture'
-  },
-  {
-    url: 'https://images.unsplash.com/flagged/photo-1573168710865-2e4c680d921a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    title: 'Bedroom'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80',
-    title: 'Office furniture'
-  }
-];
-
 export default function MainCategories() {
+  const dispatch = useAppDispatch();
+  const {categories} = useCategorySelector();
 
-
-
-
+  useEffect(() => {
+      dispatch(getCategories());
+  }, [dispatch])
 
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }}>
@@ -95,10 +77,10 @@ export default function MainCategories() {
           justifyContent: 'space-around'
         }}
       >
-        {images.map((image) => (
+        {categories.map((category) => (
 
           <ImageIconButton
-            key={image.title}
+            key={category.name}
             style={{
               width: '50%'
             }}
@@ -112,7 +94,7 @@ export default function MainCategories() {
                 bottom: 0,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center 40%',
-                backgroundImage: `url(${image.url})`,
+                backgroundImage: `url(https://images.unsplash.com/photo-1575501265016-ae78c708a09c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1780&q=80)`,
               }}
             />
             <ImageBackdrop className="imageBackdrop" />
@@ -130,7 +112,7 @@ export default function MainCategories() {
               }}
             >
               <Link 
-                to={`products/categories/${image.title}`} 
+                to={`products/categories/${category.id}`} 
                 style={{ 
                   textDecoration: 'none', 
                   color: 'white' 
@@ -142,7 +124,7 @@ export default function MainCategories() {
                   color="inherit"
                   className="imageTitle"
                 >
-                  {image.title}
+                  {category.name}
                 </Typography>
               </Link>
             </Box>

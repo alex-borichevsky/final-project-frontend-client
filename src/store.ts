@@ -3,14 +3,17 @@ import categoryReducer from './app/categories/store/categories.slice';
 import userInfoReducer from './app/users/store/users.slice';
 import userOrderReducer from './app/orders/store/orders.slice';
 import userSettingsReducer from './app/settings/store/settings.slice';
+import authReducer from './app/auth/store/auth.slice';
+import productsReducer from './app/products/store/products.slice';
 
 const rootReducer = combineReducers({
     categoryReducer,
     userInfoReducer,
     userOrderReducer,
-    userSettingsReducer
+    userSettingsReducer,
+    productsReducer,
+    authReducer
 })
-
 
 const setupStore = () => {
     return configureStore({
