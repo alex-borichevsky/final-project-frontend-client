@@ -1,73 +1,49 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import img from './static/Stol_Format_P010-01_sosna_koreliya.jpg';
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
 
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { CardProductParams } from "types/card-product.type";
+import {useAppDispatch} from "../../hooks/redux";
+import {useCategorySelector} from "../categories/store/categories.selectors";
+import {useEffect} from "react";
+import {getCategories} from "../categories/store/categories.actions";
+import {useOrderSelector} from "../orders/store/orders.selectors";
+import {getUserOrders} from "../orders/store/orders.actions";
 
-interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-}
+export default function CardProduct({name, description, price, brand, image} : CardProductParams) {
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
-
-export default function ProductCard() {
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
+    useEffect(() => {
+        console.log(name)
+    }, [])
     return (
-        <Card sx={{ maxWidth: 345, margin: '10px' }}>
-            <CardHeader
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title="Product name: stol"
-                subheader="created at: 21 february 23"
-            />
+        <Card sx={{ bgcolor: '#ab9689', padding: 3}}>
             <CardMedia
-                component="img"
-                height="194"
-                image={img}
-                alt="Paella dish"
+                sx={{
+                    width: 300,
+                    height: 300,
+                    margin: '10px auto 0'
+                }}
+                image="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1916&q=80"
+                title="Product"
             />
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    price: 12$
-                    quantity: 3
-                    brand: ikea
+                <Typography gutterBottom variant="h5" component="div">
+                    {name}
                 </Typography>
-                <Typography>
-                    Description of product:
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae dicta fugit ipsum voluptate? Distinctio iusto, quasi. Doloribus laborum, maiores.
+                <Typography variant="body2" color="text.secondary">
+                    {description}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {price}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {brand}
                 </Typography>
             </CardContent>
-
+            <CardActions>
+                <Button size="medium" sx={{color: 'black'}}>
+                    <AddShoppingCartIcon/>
+                </Button>
+            </CardActions>
         </Card>
     );
 }
