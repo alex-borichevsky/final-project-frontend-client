@@ -32,7 +32,7 @@ export const signInUser = createAsyncThunk<AuthDto, {dto: SignInDto}>(
             return response.data;
 
         }   catch (e) {
-            return  thunkAPI.rejectWithValue('Can`t log in.')
+            return  thunkAPI.rejectWithValue('Can`t log in.');
         }
     }
 );

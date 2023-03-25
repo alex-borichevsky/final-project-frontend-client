@@ -22,6 +22,9 @@ export default function AppBar() {
   useEffect(() => {
     if (Cookies.get('access_token'))
       setAuth(true);
+    else {
+      setAuth(false);
+    }
   })
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

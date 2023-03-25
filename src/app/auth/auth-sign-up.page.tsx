@@ -10,6 +10,8 @@ export default function AuthSignUpPage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const currentTarget = event.currentTarget;
+    
     const data = new FormData(event.currentTarget)
     const email : string = String(data.get('email'));
     const password : string = String(data.get('password'));
@@ -20,9 +22,15 @@ export default function AuthSignUpPage() {
       confirmPassword: confirmPassword
     };
 
-    dispatch(registerUser({dto}));
-    event.currentTarget.reset();
-    navigate('/', {replace: true});
+    dispatch(registerUser({dto}))
+      .then((response: any) => {
+        if (response.meta.rejectedWithValue) {
+          console.log(response.payload);
+        } else {
+          currentTarget.reset();
+          navigate('/', {replace: true});
+        }
+      })
   }
 
   return (

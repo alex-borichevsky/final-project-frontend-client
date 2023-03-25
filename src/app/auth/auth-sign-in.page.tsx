@@ -1,4 +1,5 @@
 import { useAppDispatch } from "hooks/redux";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "./auth-form.component";
 import { signInUser } from "./store/auth.actions";
@@ -10,6 +11,8 @@ export default function AuthSignInPage() {
   
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const currentTarget = event.currentTarget;
+
     const data = new FormData(event.currentTarget)
     const email : string = String(data.get('email'));
     const password : string = String(data.get('password'));
@@ -18,9 +21,15 @@ export default function AuthSignInPage() {
       password: password
     };
 
-    dispatch(signInUser({dto}));
-    event.currentTarget.reset();
-    navigate('/', {replace: true});
+    dispatch(signInUser({dto}))
+      .then((response: any) => {
+        if (response.meta.rejectedWithValue) {
+          console.log(response.payload);
+        } else {
+          currentTarget.reset();
+          navigate('/', {replace: true});
+        }
+      })
   }
 
   return (
