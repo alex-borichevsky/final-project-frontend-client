@@ -25,7 +25,6 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, { payload }) => {
                 state.pending.token = false;
-                console.log(payload)
                 state.token = payload;
                 Cookies.set('access_token', payload.access_token);
             })
@@ -45,7 +44,7 @@ const authSlice = createSlice({
             })
             .addCase(signInUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
-                state.errors.token = action.payload.message;
+                state.errors.token = action.payload;
             })
 
             .addCase(logOutUser.pending, (state) => {
