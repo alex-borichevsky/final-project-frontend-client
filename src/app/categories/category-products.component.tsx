@@ -31,7 +31,7 @@ export default function CategoryProducts({categoryId} : Props) {
     >
       {products.map((product) => (
         <CardProduct
-          key={product.created}
+          key={product.id}
           name={product.name}
           description={product.description}
           price={product.price}
