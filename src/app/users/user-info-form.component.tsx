@@ -13,10 +13,6 @@ import React, {useEffect, useState} from "react";
 import {useAppDispatch} from "../../hooks/redux";
 import {useUserInfoSelector} from "./store/users.selectors";
 import {getUserInfo, updateUserInfo} from "./store/users.actions";
-import {useForm, Controller} from "react-hook-form";
-import {schema} from "./user-info-form.constants";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {UpdateUserInfoDtoType} from "./types/update-user-info-dto.type";
 
 
 
@@ -68,12 +64,11 @@ type PropsType = {
               my: 8,
               mx: 4,
               display: 'flex',
-              flexDirection: 'column',
-                textAlign: 'center'
+              flexDirection: 'column'
             }}
           >
-              Your personal information
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5" sx={{textAlign: 'center'}}>
+                Your personal information
             </Typography>
               <Box
                   component="form"

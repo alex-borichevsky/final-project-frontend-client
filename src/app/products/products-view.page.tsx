@@ -38,6 +38,7 @@ export default function ProductsViewPage() {
       {products.map((product) => (
         <CardProduct 
           key={product.id}
+          id={product.id}
           name={product.name}
           description={product.description}
           price={product.price}

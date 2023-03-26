@@ -25,7 +25,6 @@ const userCartSlice = createSlice({
             .addCase(getUserCart.fulfilled, (state, { payload }) => {
                 state.pending.userCart = false;
                 state.userCart = payload;
-                console.log(state.userCart)
             })
             .addCase(getUserCart.rejected, (state, action: any & { payload: any }) => {
                 state.pending.userCart = false;

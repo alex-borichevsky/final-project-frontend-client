@@ -2,8 +2,19 @@ import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { CardProduсtParams } from "types/card-product.type";
+import {useAppDispatch} from "../hooks/redux";
+import {useProductsSelector} from "../app/products/store/products.selectors";
+import {addProductToCart} from "../app/carts/store/cart.actions";
 
-export default function CardProduct({name, description, price, brand, image} : CardProduсtParams) {
+export default function CardProduct({id, name, description, price, brand, image} : CardProduсtParams) {
+    const dispatch = useAppDispatch();
+
+
+    const handleAddProduct = () => {
+        const dto = {quantity: 1, productId: id }
+        dispatch(addProductToCart({dto}))
+    }
+
   return (
       <Card sx={{ bgcolor: '#ab9689', padding: 3}}>
         <CardMedia
@@ -30,7 +41,7 @@ export default function CardProduct({name, description, price, brand, image} : C
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="medium" sx={{color: 'black'}}>
+          <Button size="medium" sx={{color: 'black'}} onClick={handleAddProduct}>
             <AddShoppingCartIcon/>
           </Button>
         </CardActions>

@@ -11,7 +11,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText, Link
+  ListItemText, Grid
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -22,6 +22,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LogoutIcon from '@mui/icons-material/Logout';
+import {Link} from "react-router-dom";
 
 
 const drawerWidth = 240;
@@ -141,7 +142,11 @@ export default function Layout({ children, nav, title }: Props) {
           <Typography variant="h6" noWrap component="div">
             {title}
           </Typography>
-          <LogoutIcon style={{marginLeft: 'auto'}}/>
+          <Grid item sx={{marginLeft: 'auto'}}>
+          <Link to="/app/auth/log-out" style={{color: 'white'}}>
+            <LogoutIcon />
+          </Link>
+        </Grid>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -158,7 +163,7 @@ export default function Layout({ children, nav, title }: Props) {
         <List>
           {nav.map((item) => (
             <Link
-              href={item.navigatePath}
+              to={item.navigatePath}
               style={{ textDecoration: "none", color: "black" }}
             >
               <ListItem

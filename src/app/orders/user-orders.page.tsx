@@ -1,4 +1,4 @@
-import {nav} from "../users/constants/nav";
+import {nav} from "../../constants/nav";
 import Layout from "../../components/layout.component";
 import ContentUserOrdersPage from "./content-user-orders.page";
 
