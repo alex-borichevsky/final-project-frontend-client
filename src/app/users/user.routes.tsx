@@ -20,9 +20,9 @@ const Suspended: FC<PropsWithChildren & { element: any }> = ({ element: Element 
 
 // ======= pages ======= //
 const UserPage = React.lazy(() => import("app/users/user.page"));
-const UserOrderPage = React.lazy(() => import("app/users/user-orders.page"));
-const UserCartPage = React.lazy(() => import("app/users/user-cart.page"));
-const UserSettingsPage = React.lazy(() => import("app/users/user-settings.page"));
+const UserOrderPage = React.lazy(() => import("app/orders/user-orders.page"));
+const UserCartPage = React.lazy(() => import("app/carts/user-cart.page"));
+const UserSettingsPage = React.lazy(() => import("app/settings/user-settings.page"));
 
 const UsersRoutes: FC = () => {
     return (

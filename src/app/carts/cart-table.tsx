@@ -9,6 +9,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import {useAppDispatch} from "../../hooks/redux";
+import {useEffect} from "react";
+import {useUserCartSelector} from "./store/cart.selectors";
+import {getUserCart} from "./store/cart.actions";
 
 
 
@@ -38,35 +42,23 @@ const columns: readonly Column[] = [
     },
 ];
 
-interface Data {
-    productName: string;
-    price: number;
-    quantity: number
-}
-
-function createData(
-    productName: string,
-    price: number,
-    quantity: number
-): Data {
-    return { productName, price, quantity };
-}
-
-const rows = [
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-    createData('stol', 23, 3),
-];
 
 export default function CartTable() {
+
+    const dispatch = useAppDispatch();
+    const {userCart} = useUserCartSelector();
+
+    useEffect(() => {
+        dispatch(getUserCart());
+
+    }, [dispatch])
+
+    useEffect(() => {
+        console.log(userCart);
+    }, [userCart])
+
+
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -98,20 +90,43 @@ export default function CartTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
+                        {userCart?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((cart) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.productName}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={cart.id}>
                                         {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                </TableCell>
-                                            );
+                                            if (column.id  == "productName") {
+                                                const value = cart.products.name;
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {column.format && typeof value === 'number'
+                                                            ? column.format(value)
+                                                            : value}
+                                                    </TableCell>
+                                                );
+
+                                            }
+                                            if (column.id == "price") {
+                                                const value = cart.products.price;
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {column.format && typeof value === 'number'
+                                                            ? column.format(value)
+                                                            : value}
+                                                    </TableCell>
+                                                );
+
+                                            }
+                                            if (column.id == "quantity") {
+                                                const value = cart.quantity;
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {column.format && typeof value === 'number'
+                                                            ? column.format(value)
+                                                            : value}
+                                                    </TableCell>
+                                                );
+                                            }
                                         })}
                                         <TableCell style={{textAlign: 'center'}}>
                                             <AddIcon/>
@@ -124,9 +139,9 @@ export default function CartTable() {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
+                rowsPerPageOptions={[3, 5, 7]}
                 component="div"
-                count={rows.length}
+                count={userCart?.length ? userCart?.length : 5}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

@@ -65,7 +65,14 @@ export default function AppBar() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Account</MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                        underline="none"
+                        sx={{color: 'black'}}
+                        href="/app/users">
+                      Account
+                    </Link>
+                  </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <Link 
                       underline="none"

@@ -1,7 +1,7 @@
 export interface IdDto {
-    id: number;
+    id?: number;
 
-    created: number;
+    created?: number;
 
-    updated: number;
+    updated?: number;
 }
