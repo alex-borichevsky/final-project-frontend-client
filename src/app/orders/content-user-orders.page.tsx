@@ -13,6 +13,10 @@ export default function ContentUserOrdersPage() {
         dispatch(getUserOrders());
         console.log(orders);
     }, [dispatch])
+
+
+
+
     return (
 
         <Grid
@@ -24,13 +28,15 @@ export default function ContentUserOrdersPage() {
         >
             {orders?.map(order => (
                 <Grid
+                    container
                     sx={{
                         display: 'flex',
                         flexWrap: 'wrap',
-                        justifyContent: 'space-around',
+                        justifyContent: 'space-between',
+                        gap: 2,
                         border: '2px solid grey',
                         borderRadius: 10,
-                        padding: '20px 0',
+                        padding: '20px 30px',
                         marginTop: 1
                     }}
                 >
@@ -48,6 +54,8 @@ export default function ContentUserOrdersPage() {
                     </Typography>
                     {order.products.map(product => (
                         <CardProduct
+                            id={product.id}
+                            key={product.id}
                             brand={product.brand}
                             description={''}
                             image={product.image}

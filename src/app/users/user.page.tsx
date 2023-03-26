@@ -1,5 +1,5 @@
 import Layout from "../../components/layout.component";
-import {nav} from "./constants/nav";
+import {nav} from "../../constants/nav";
 import ContentUserPage from "./content-user.page";
 
 

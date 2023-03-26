@@ -1,7 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import jwt_decode from "jwt-decode";
 import repository from "../../../repository";
-import Cookies from "js-cookie";
+import {OrderDtoType} from "../types/order-dto.type";
+import {CreateOrderDtoType} from "../types/create-order-dto.type";
 
 const headers = {
     headers: {
@@ -22,6 +23,18 @@ export const getUserOrders = createAsyncThunk(
 
         }   catch (e) {
             return  thunkAPI.rejectWithValue('Can`t get order')
+        }
+    }
+);
+
+export const createOrder = createAsyncThunk<CreateOrderDtoType, {dto: CreateOrderDtoType}>(
+    'user/order/create',
+    async ({dto}, thunkAPI) => {
+        try{
+            const response = await repository.post('/orders',dto, headers);
+            return response.data;
+        }   catch (e) {
+            return  thunkAPI.rejectWithValue('Can`t create an order')
         }
     }
 );
