@@ -14,13 +14,7 @@ export const getUserCart = createAsyncThunk(
     'user/cart/get',
     async (_, thunkAPI) => {
         try{
-            const access_token = Cookies.get('access_token');
-            let decoded = null;
-            if (access_token) {
-                decoded = jwt_decode(access_token);
-            }
-            // @ts-ignore
-            const response = await repository.get(`/cart/user/${decoded.id}`, headers);
+            const response = await repository.get('/cart/user', headers);
             console.log(response.data)
             return response.data;
 

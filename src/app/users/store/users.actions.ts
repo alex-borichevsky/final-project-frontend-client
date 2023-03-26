@@ -15,13 +15,8 @@ export const getUserInfo = createAsyncThunk(
     'user/info/get',
     async (_, thunkAPI) => {
         try{
-            const access_token = Cookies.get('access_token');
-            let decoded = null;
-            if (access_token) {
-                decoded = jwt_decode(access_token);
-            }
-            // @ts-ignore
-            const response = await repository.get(`/users/info/${decoded.id}`, headers);
+
+            const response = await repository.get('/users/info/user', headers);
             return response.data;
 
         }   catch (e) {
@@ -35,13 +30,7 @@ export const updateUserInfo = createAsyncThunk<UpdateUserInfoDtoType, {dto: Upda
     'user/info/update',
     async ({dto}, thunkAPI) => {
         try{
-            const access_token = Cookies.get('access_token');
-            let decoded = null;
-            if (access_token) {
-                decoded = jwt_decode(access_token);
-            }
-            // @ts-ignore
-            const response = await repository.put(`/users/info/${decoded.id}`,dto, headers);
+            const response = await repository.put('/users/info/user',dto, headers);
             return response.data;
 
         }   catch (e) {
