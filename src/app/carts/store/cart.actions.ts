@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import jwt_decode from "jwt-decode";
 import repository from "../../../repository";
+import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
 const headers = {
@@ -10,10 +10,8 @@ const headers = {
     }
 }
 
-
-
-export const getUserOrders = createAsyncThunk(
-    'user/orders/get',
+export const getUserCart = createAsyncThunk(
+    'user/cart/get',
     async (_, thunkAPI) => {
         try{
             const access_token = Cookies.get('access_token');
@@ -22,12 +20,15 @@ export const getUserOrders = createAsyncThunk(
                 decoded = jwt_decode(access_token);
             }
             // @ts-ignore
-            const response = await repository.get(`/orders/user/${decoded.id}`, headers);
-            console.log(response.data);
+            const response = await repository.get(`/cart/user/${decoded.id}`, headers);
+            console.log(response.data)
             return response.data;
 
         }   catch (e) {
-            return  thunkAPI.rejectWithValue('Can`t get order')
+            return  thunkAPI.rejectWithValue('Can`t get user cart')
         }
     }
 );
+
+
+

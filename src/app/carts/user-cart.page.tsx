@@ -1,7 +1,6 @@
 import Layout from "../../components/layout.component";
-import {nav} from "./constants/nav";
-import ContentUserOrdersPage from "../orders/content-user-orders.page";
 import ContentUserCartsPage from "./content-user-carts.page";
+import {nav} from "../users/constants/nav";
 
 export default function UserCartPage () {
     return(

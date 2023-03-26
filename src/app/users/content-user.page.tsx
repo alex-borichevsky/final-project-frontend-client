@@ -18,12 +18,14 @@ export default function ContentUserPage() {
 
         event.preventDefault();
         const data = new FormData(event.currentTarget)
-        const firstName : string = String(data.get('firstName'));
-        const lastName : string = String(data.get('lastName'));
+        const firstName : string = String(data.get('firstname'));
+        const lastName : string = String(data.get('lastname'));
         const phone : string = String(data.get('phone'));
         const address : string = String(data.get('address'));
         const dto: UpdateUserInfoDtoType = {firstName: firstName, lastName: lastName, phone: phone, address: address};
+        console.log(dto);
         dispatch(updateUserInfo({dto}));
+
     }
 
 

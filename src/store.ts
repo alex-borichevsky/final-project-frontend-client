@@ -5,6 +5,7 @@ import userOrderReducer from './app/orders/store/orders.slice';
 import userSettingsReducer from './app/settings/store/settings.slice';
 import authReducer from './app/auth/store/auth.slice';
 import productsReducer from './app/products/store/products.slice';
+import userCartReducer from  './app/carts/store/cart.slice';
 
 const rootReducer = combineReducers({
     categoryReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     userOrderReducer,
     userSettingsReducer,
     productsReducer,
-    authReducer
+    authReducer,
+    userCartReducer
 })
 
 const setupStore = () => {

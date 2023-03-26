@@ -75,7 +75,12 @@ type PropsType = {
               Your personal information
             <Typography component="h1" variant="h5">
             </Typography>
-
+              <Box
+                  component="form"
+                  noValidate
+                  onSubmit={handleSubmit}
+                  sx={{ mt: 1 }}
+              >
               <TextField
                 margin="normal"
                 required
@@ -135,6 +140,7 @@ type PropsType = {
               >
                 submit
               </Button>
+                  </Box>
               <Grid container>
                 <Grid
                   container

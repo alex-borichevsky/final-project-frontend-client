@@ -1,7 +1,7 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { CardProductParams } from "types/card-product.type";
+import { CardProduсtParams } from "types/card-product.type";
 import {useAppDispatch} from "../../hooks/redux";
 import {useCategorySelector} from "../categories/store/categories.selectors";
 import {useEffect} from "react";
@@ -9,7 +9,7 @@ import {getCategories} from "../categories/store/categories.actions";
 import {useOrderSelector} from "../orders/store/orders.selectors";
 import {getUserOrders} from "../orders/store/orders.actions";
 
-export default function CardProduct({name, description, price, brand, image} : CardProductParams) {
+export default function CardProduct({name, description, price, brand, image} : CardProduсtParams) {
 
     useEffect(() => {
         console.log(name)
