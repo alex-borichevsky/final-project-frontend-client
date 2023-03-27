@@ -43,7 +43,6 @@ export const logOutUser = createAsyncThunk(
     async (_, thunkAPI) => {
         try{
             const response = await repository.get("auth/logout", headers);
-            console.log(response.data);
             return response.data;
 
         }   catch (e) {
