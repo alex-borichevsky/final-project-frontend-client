@@ -9,7 +9,6 @@ const repository = axios.create({
 
 repository.interceptors.request.use(
     async (config) => {
-        console.log('repository')
         const access_token = Cookies.get('access_token');
 
         if (access_token) {
@@ -18,7 +17,6 @@ repository.interceptors.request.use(
 
         let curTime = Number(new Date().getTime()) / 1000;
         let expTime = Number(Cookies.get('expired_at')) / 1000;
-        console.log(expTime)
         console.log(expTime - curTime)
 
         if ((expTime - curTime) <= 0) {
@@ -27,7 +25,7 @@ repository.interceptors.request.use(
             window.location.replace("/app/auth/sign-in");
             return config;
         }
-        if ((expTime - curTime) < 30 && (expTime - curTime) > 0) {
+        if ((expTime - curTime) < 600 && (expTime - curTime) > 0) {
               try {
                     Cookies.remove('access_token');
                     Cookies.remove('expired_at');
