@@ -39,7 +39,6 @@ type PropsType = {
                 setInputLastName(data.payload.lastName);
                 setInputPhone(data.payload.phone);
                 setInputAddress(data.payload.address);
-                console.log(data.payload.firstName);
         })
     }, [dispatch])
 
