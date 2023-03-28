@@ -20,7 +20,6 @@ export const getUserCart = createAsyncThunk(
     async (_, thunkAPI) => {
         try{
             const response = await repository.get('/cart/user', headers);
-            console.log(response.data);
             return response.data.sort((a: any, b: any) => a.id > b.id ? 1 : -1);
 
         }   catch (e) {
@@ -58,7 +57,6 @@ export const addProductToCart = createAsyncThunk<AddProductToCartDtoType, {dto: 
     'user/order/create',
     async ({dto}, thunkAPI) => {
         try{
-            console.log(dto);
             const response = await repository.post('/cart/product',dto, headers);
             return response.data;
         }   catch (e) {
