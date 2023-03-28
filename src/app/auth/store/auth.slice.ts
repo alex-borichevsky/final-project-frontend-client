@@ -56,9 +56,9 @@ const authSlice = createSlice({
             .addCase(logOutUser.fulfilled, (state, {payload}) => {
                 state.pending.token = false;
                 state.token = null;
-                Cookies.remove('access_token');
-                Cookies.remove('expired_at');
-            })
+                    Cookies.remove('access_token');
+                    Cookies.remove('expired_at');
+                })
             .addCase(logOutUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
                 state.errors.token = action.payload.message;
