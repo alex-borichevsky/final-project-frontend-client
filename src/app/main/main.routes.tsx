@@ -14,7 +14,6 @@ const AuthPage = React.lazy(() => import("app/auth"));
 const ProductPage = React.lazy(() => import("app/products"));
 const MainPage = React.lazy(() => import("app/main/main-view.page"));
 
-
 const MainRoutes: FC = () => {
   return (
     <Routes>
