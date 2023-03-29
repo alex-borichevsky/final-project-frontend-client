@@ -51,12 +51,12 @@ const UserInfoForm = () => {
         address: data.address
       };
 
-    dispatch(updateUserInfo({dto}))
-      .then(({meta}) => {
-        if (meta.requestStatus !== 'rejected') {
-          setDisabled(true);
-        }
-      })
+      dispatch(updateUserInfo({dto}))
+        .then(({meta}) => {
+          if (meta.requestStatus !== 'rejected') {
+            setDisabled(true);
+          }
+        })
     }
 
 
