@@ -9,41 +9,55 @@ import {
     Link,
     FormControlLabel, Checkbox
 } from '@mui/material';
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useAppDispatch} from "../../hooks/redux";
 import {useUserInfoSelector} from "./store/users.selectors";
 import {getUserInfo, updateUserInfo} from "./store/users.actions";
+import { Controller, FieldValues, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schemaPersonalInfo } from './user-info-schema.yap';
+import { UpdateUserInfoDtoType } from './types/update-user-info-dto.type';
 
-
-
-type PropsType = {
-  handleSubmit: React.FormEventHandler<HTMLFormElement>,
-}
-
-    const UserInfoForm = ({handleSubmit} : PropsType) => {
-
-
-
+const UserInfoForm = () => {
     const dispatch = useAppDispatch();
-    const {userInfo} = useUserInfoSelector();
-    const [inputFirstName, setInputFirstName] = useState<string | null | undefined>('');
-    const [inputLastName, setInputLastName] = useState<string | undefined>('');
-    const [inputPhone, setInputPhone] = useState<string | undefined>('');
-    const [inputAddress, setInputAddress] = useState<string | undefined>('');
+    const [disabled, setDisabled] = useState(true);
 
+    const {
+      handleSubmit,
+      control,
+      formState: { errors },
+      setValue
+    } = useForm({
+      mode: 'all', 
+      resolver: yupResolver(schemaPersonalInfo),
+      defaultValues: {firstname: '', lastname: '', phone: '', address: ''}
+    });
 
     useEffect(() => {
-        dispatch(getUserInfo())
-            .then ((data) => {
-                setInputFirstName(data.payload.firstName);
-                setInputLastName(data.payload.lastName);
-                setInputPhone(data.payload.phone);
-                setInputAddress(data.payload.address);
-        })
+      dispatch(getUserInfo())
+        .then ((data) => {
+          setValue('firstname', data.payload.firstName);
+          setValue('lastname', data.payload.lastName);
+          setValue('phone', data.payload.phone);
+          setValue('address', data.payload.address);
+      })
     }, [dispatch])
 
+    const handleSubmitForm = (data: FieldValues) => {
+      const dto: UpdateUserInfoDtoType = {
+        firstName: data.firstname, 
+        lastName: data.lastname, 
+        phone: data.phone, 
+        address: data.address
+      };
 
-  const [disabled, setDisabled] = React.useState(true);
+    dispatch(updateUserInfo({dto}))
+      .then(({meta}) => {
+        if (meta.requestStatus !== 'rejected') {
+          setDisabled(true);
+        }
+      })
+    }
 
 
   return (
@@ -72,69 +86,94 @@ type PropsType = {
               <Box
                   component="form"
                   noValidate
-                  onSubmit={handleSubmit}
+                  onSubmit={handleSubmit(handleSubmitForm)}
                   sx={{ mt: 1 }}
               >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="firstname"
-                value={inputFirstName}
-                name="firstname"
-                autoComplete="firstname"
-                disabled={disabled}
-                onChange={(e) => setInputFirstName(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="lastname"
-                value={inputLastName}
-                id="lastname"
-                autoComplete="lastname"
-                disabled={disabled}
-                onChange={(e) => setInputLastName(e.target.value)}
-              />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="phone"
-                    value={inputPhone}
-                    id="phone"
-                    autoComplete="phone"
-                    disabled={disabled}
-                    onChange={(e) => setInputPhone(e.target.value)}
+                <Controller
+                  name="firstname"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      helperText={errors.firstname ? `${errors.firstname.message}`: ''}
+                      margin="normal"
+                      fullWidth
+                      id="firstname"
+                      value={value}
+                      disabled={disabled}
+                      onChange={onChange}
+                      error={errors.firstname ? true : false}
+                    />
+                  )}
                 />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="address"
-                    value={inputAddress}
-                    id="address"
-                    autoComplete="address"
-                    disabled={disabled}
-                    onChange={(e) => setInputAddress(e.target.value)}
-
+                <Controller
+                  name="lastname"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      helperText={errors.lastname ? `${errors.lastname.message}`: ''}
+                      margin="normal"
+                      fullWidth
+                      id="lastname"
+                      value={value}
+                      disabled={disabled}
+                      onChange={onChange}
+                      error={errors.lastname ? true : false}
+                    />
+                  )}
                 />
-                <FormControlLabel control={<Checkbox  />} label="Update info" onChange={()=> setDisabled(!disabled)} />
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      helperText={errors.phone ? `${errors.phone.message}`: ''}
+                      margin="normal"
+                      fullWidth
+                      id="phone"
+                      value={value}
+                      disabled={disabled}
+                      onChange={onChange}
+                      error={errors.phone ? true : false}
+                    />
+                  )}
+                />
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      helperText={errors.address ? `${errors.address.message}`: ''}
+                      margin="normal"
+                      fullWidth
+                      id="address"
+                      value={value}
+                      disabled={disabled}
+                      onChange={onChange}
+                      error={errors.address ? true : false}
+                    />
+                  )}
+                />
+                <FormControlLabel 
+                  control={
+                    <Checkbox checked={!disabled}/>
+                  } 
+                  label="Update info" 
+                  onChange={()=> setDisabled(!disabled)} 
+                />
                 <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  borderRadius: '20px',
-                  backgroundColor: '#6e5f55'
-                }}
-              >
-                submit
-              </Button>
-                  </Box>
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    borderRadius: '20px',
+                    backgroundColor: '#6e5f55'
+                  }}
+                >
+                  Save
+                </Button>
+              </Box>
               <Grid container>
                 <Grid
                   container
