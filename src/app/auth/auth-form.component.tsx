@@ -3,8 +3,18 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import HomeIcon from '@mui/icons-material/Home';
 import { FormPropsType } from './types/form-props.type';
+import { Controller} from 'react-hook-form';
 
-const Form = ({ title, nameBtn, handleSubmit, isSignIn }: FormPropsType) => {
+const Form = ({ 
+    title, 
+    nameBtn, 
+    handleSubmit, 
+    handleSubmitForm, 
+    isSignIn, 
+    control, 
+    errors
+  }: FormPropsType) => {
+  
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
@@ -59,42 +69,58 @@ const Form = ({ title, nameBtn, handleSubmit, isSignIn }: FormPropsType) => {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(handleSubmitForm)}
             sx={{ mt: 1 }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
+            <Controller
               name="email"
-              autoComplete="email"
+              control={control}
+              render={({ field }) => (
+                  <TextField
+                      helperText={errors.email ? `${errors.email.message}`: ''}
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      error={errors.email ? true : false}
+                      {...field} />
+              )}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
+            <Controller
               name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              control={control}
+              render={({ field }) => (
+                  <TextField
+                    helperText={errors.password ? `${errors.password.message}`: ''}
+                    margin="normal"
+                    fullWidth
+                    label="Password"
+                    type="password"
+                    id="password"
+                    error={errors.password ? true : false}
+                    {...field} />
+              )}
             />
             {
               isSignIn
                 ?
                 <></>
                 :
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
+                <Controller
                   name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirmPassword"
-                  autoComplete="current-confirmPassword"
+                  control={control}
+                  render={({ field }) => (
+                  <TextField
+                    helperText={errors.confirmPassword ? `${errors.confirmPassword.message}`: ''}
+                    margin="normal"
+                    fullWidth
+                    label="Confirm Password"
+                    type="password"
+                    id="confirmPassword"
+                    error={errors.confirmPassword ? true : false}
+                    {...field} />
+                  )}
                 />
             }
             <Button
