@@ -22,7 +22,7 @@ export default function CardProduct({name, description, price, brand, image} : C
                     height: 300,
                     margin: '10px auto 0'
                 }}
-                image="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1916&q=80"
+                image="https://res.cloudinary.com/dzouilf8r/image/upload/v1680110632/photo-1555041469-a586c61ea9bc_kfy8nx.avif"
                 title="Product"
             />
             <CardContent>
