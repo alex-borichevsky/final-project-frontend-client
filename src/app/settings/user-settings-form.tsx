@@ -13,7 +13,7 @@ import { useAppDispatch } from 'hooks/redux';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { updateUserPassword } from './store/settings.actions';
 import { UpdateUserPasswordDtoType } from './types/update-user-password-dto.type';
-import { schemaUpdatePassword } from './user-settings-schema.yap';
+import { schemaUpdatePassword } from './user-settings-schema.yup';
 
 const UserSettingsForm = () => {
     const dispatch = useAppDispatch();
