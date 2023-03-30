@@ -5,41 +5,56 @@ import Form from "./auth-form.component";
 import { registerUser } from "./store/auth.actions";
 import { useAuthSelector } from "./store/auth.selectors";
 import { RegistrationDto } from "./types/registration-dto.type";
+import { schemaSignUp } from "./auth-schemas.yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FieldValues, useForm } from "react-hook-form";
 
 export default function AuthSignUpPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {errors} = useAuthSelector();
+  // const {errors} = useAuthSelector();
 
-  useEffect(() => {
-    if (errors.token)
-      alert(errors.token);
-  }, [errors])
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    resolver: yupResolver(schemaSignUp),
+    defaultValues: { email: '', password: '', confirmPassword: '' }
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const currentTarget = event.currentTarget;
+  // useEffect(() => {
+  //   if (errors.token)
+  //     alert(errors.token);
+  // }, [errors])
 
-    const data = new FormData(event.currentTarget)
-    const email : string = String(data.get('email'));
-    const password : string = String(data.get('password'));
-    const confirmPassword : string = String(data.get('confirmPassword'));
+  const handleSubmitForm = (data: FieldValues) => {
     const dto: RegistrationDto = {
-      email: email, 
-      password: password, 
-      confirmPassword: confirmPassword
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword
     };
 
-    dispatch(registerUser({dto}))
-      .then(({meta}) => {
+    dispatch(registerUser({ dto }))
+      .then(({ meta }) => {
         if (meta.requestStatus !== 'rejected') {
-          currentTarget.reset();
-          navigate('/', {replace: true});
+          reset();
+          navigate('/', { replace: true });
         }
       })
   }
 
   return (
-    <Form title="Sign Up" nameBtn="Sign Up" handleSubmit={handleSubmit} isSignIn={false}/>
+    <Form
+      title="Sign Up"
+      nameBtn="Sign Up"
+      handleSubmit={handleSubmit}
+      handleSubmitForm={handleSubmitForm}
+      control={control}
+      errors={errors}
+      isSignIn={false}
+    />
   )
 }
