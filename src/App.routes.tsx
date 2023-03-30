@@ -23,12 +23,14 @@ const PrivateRoute: FC<{ element: any }> = ({ element: Element }) => {
 // ======= pages ======= //
     const MainPage = React.lazy(() => import("app/main"));
     const UserPage = React.lazy(() => import("app/users"));
+    const GptPage = React.lazy(() => import("app/gpt"));
 
     const AppRoutes = () => {
         return (
             <Routes>
                 <Route path={"/app/users/*"} element={<PrivateRoute element={UserPage}/>}/>
                 <Route path={"/app/*"} element={<PublicRoute element={MainPage}/>}/>
+                <Route path={'/gpt/*'} element={<PublicRoute element={GptPage} />} />
 
                 {/* DEFAULT */}
                 <Route path='*' element={<Navigate to="/app"/>}/>
