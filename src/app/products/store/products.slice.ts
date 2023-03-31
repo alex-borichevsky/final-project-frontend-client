@@ -1,5 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
+
+// ============== Types ==============
 import { ProductState } from "../types/product-state.type";
+
+// ============== Actions ==============
 import { getProducts, getProductsByCategoryId } from "./products.actions";
 
 const initialState:ProductState = {
@@ -21,6 +25,7 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // ============== Get products ==============
       .addCase(getProducts.pending, (state) => {
           state.pending.products = true;
           state.errors.products = null;
@@ -31,8 +36,9 @@ const productsSlice = createSlice({
       })
       .addCase(getProducts.rejected, (state, action: any & { payload: any }) => {
           state.pending.products = false;
-          state.errors.products = action.payload.message;
+          state.errors.products = action.payload;
       })
+      // ============== Get products by category id ==============
       .addCase(getProductsByCategoryId.pending, (state) => {
         state.pending.products = true;
         state.errors.products = null;
@@ -43,7 +49,7 @@ const productsSlice = createSlice({
       })
       .addCase(getProductsByCategoryId.rejected, (state, action: any & { payload: any }) => {
           state.pending.products = false;
-          state.errors.products = action.payload.message;
+          state.errors.products = action.payload;
       })
   },
 });
