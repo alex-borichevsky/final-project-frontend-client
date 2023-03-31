@@ -1,6 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
+
+// ============== Types ==============
 import { AuthState } from "../types/auth-state.type";
+
+// ============== Actions ==============
 import {logOutUser, registerUser, signInUser} from "./auth.actions";
+
+// ============== Cookies ==============
 import Cookies from 'js-cookie';
 
 const initialState: AuthState = {
@@ -19,6 +25,7 @@ const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // ============== Registration ==============
             .addCase(registerUser.pending, (state) => {
                 state.pending.token = true;
                 state.errors.token = null;
@@ -31,9 +38,9 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
-                state.errors.token = action.payload.message;
+                state.errors.token = action.payload;
             })
-
+            // ============== Sign ip ==============
             .addCase(signInUser.pending, (state) => {
                 state.pending.token = true;
                 state.errors.token = null;
@@ -48,7 +55,7 @@ const authSlice = createSlice({
                 state.pending.token = false;
                 state.errors.token = action.payload;
             })
-
+            // ============== Log out ==============
             .addCase(logOutUser.pending, (state) => {
                 state.pending.token = true;
                 state.errors.token = null;
@@ -61,7 +68,7 @@ const authSlice = createSlice({
                 })
             .addCase(logOutUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
-                state.errors.token = action.payload.message;
+                state.errors.token = action.payload;
             })
     },
 });
