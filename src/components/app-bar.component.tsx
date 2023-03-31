@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import MuiToolbar from '@mui/material/Toolbar';
 import MuiAppBar from '@mui/material/AppBar';
 
+// ============== Icons ==============
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+// ============== Cookies ==============
 import Cookies from 'js-cookie';
 
 const rightLink = {
@@ -16,13 +18,7 @@ const rightLink = {
 };
 
 export default function AppBar() {
-  const [auth, setAuth] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  useEffect(() => {
-    if (Cookies.get('access_token'))
-      setAuth(true);
-  },[])
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -37,7 +33,7 @@ export default function AppBar() {
       <MuiAppBar position="fixed" sx={{backgroundColor: '#6e5f55'}}>
         <MuiToolbar sx={{ justifyContent: 'space-between'}}>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            {auth 
+            {Cookies.get('access_token') 
               ? 
               <>
                 <IconButton

@@ -1,10 +1,16 @@
+import {useEffect} from "react";
 import { styled } from '@mui/material/styles';
 import { Grid, Typography, Container, ButtonBase, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import {useEffect} from "react";
+
+// ============== Redux ==============
 import { getCategories} from "../categories/store/categories.actions";
 import {useAppDispatch} from "../../hooks/redux";
 import {useCategorySelector} from "../categories/store/categories.selectors";
+
+// ============== Components ==============
+import ErrorAlert from "components/error-alert.component";
+import Loading from "components/loading.component";
 
 const ImageBackdrop = styled('div')(({ theme }) => ({
   position: 'absolute',
@@ -56,10 +62,10 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
 
 export default function MainCategories() {
   const dispatch = useAppDispatch();
-  const {categories} = useCategorySelector();
+  const {categories, pending, errors} = useCategorySelector();
 
   useEffect(() => {
-      dispatch(getCategories());
+    dispatch(getCategories());
   }, [dispatch])
 
   return (
@@ -77,60 +83,65 @@ export default function MainCategories() {
           justifyContent: 'space-around'
         }}
       >
-        {categories.map((category) => (
-
-          <ImageIconButton
-            key={category.name}
-            style={{
-              width: '50%'
-            }}
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center 40%',
-                backgroundImage: `url(https://images.unsplash.com/photo-1575501265016-ae78c708a09c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1780&q=80)`,
-              }}
-            />
-            <ImageBackdrop className="imageBackdrop" />
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'common.white',
+        {pending.categories 
+        ?
+          <Loading/>
+        :
+          !errors.categories && categories.map((category) => (
+            <ImageIconButton
+              key={category.name}
+              style={{
+                width: '50%'
               }}
             >
-              <Link 
-                to={`products/categories/${category.id}`} 
-                style={{ 
-                  textDecoration: 'none', 
-                  color: 'white' 
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center 40%',
+                  backgroundImage: `url(${category.image})`,
+                }}
+              />
+              <ImageBackdrop className="imageBackdrop" />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'common.white',
                 }}
               >
-                <Typography
-                  component="h3"
-                  variant="h6"
-                  color="inherit"
-                  className="imageTitle"
+                <Link 
+                  to={`products/categories/${category.id}`} 
+                  style={{ 
+                    textDecoration: 'none', 
+                    color: 'white' 
+                  }}
                 >
-                  {category.name}
-                </Typography>
-              </Link>
-            </Box>
-          </ImageIconButton>
-        ))}
+                  <Typography
+                    component="h3"
+                    variant="h6"
+                    color="inherit"
+                    className="imageTitle"
+                  >
+                    {category.name}
+                  </Typography>
+                </Link>
+              </Box>
+            </ImageIconButton>
+          ))
+        }        
       </Grid>
+      { errors.categories && <ErrorAlert title="Error" text={errors.categories}/> }
     </Container>
   );
 }

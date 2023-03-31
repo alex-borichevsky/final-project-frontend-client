@@ -1,5 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
+
+// ============ Types =========================
 import {UserSettingsStateType} from "../types/user-settings-state.type";
+
+// ============ Actions =========================
 import {updateUserPassword} from "./settings.actions";
 
 const initialState: UserSettingsStateType = {

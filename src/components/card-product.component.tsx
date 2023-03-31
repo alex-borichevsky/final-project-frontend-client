@@ -1,50 +1,86 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
-
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useState } from "react";
+
+// ============== Redux ==============
+import { useAppDispatch } from "../hooks/redux";
+import { addProductToCart } from "../app/carts/store/cart.actions";
+
+// ============== Types ==============
 import { CardProduсtParams } from "types/card-product.type";
-import {useAppDispatch} from "../hooks/redux";
-import {useProductsSelector} from "../app/products/store/products.selectors";
-import {addProductToCart} from "../app/carts/store/cart.actions";
-
-export default function CardProduct({id, name, description, price, brand, image} : CardProduсtParams) {
-    const dispatch = useAppDispatch();
+import { useUserCartSelector } from "app/carts/store/cart.selectors";
+import ErrorAlert from "./error-alert.component";
+import SuccessModalWindow from "./success-modal-window.component";
 
 
-    const handleAddProduct = () => {
-        const dto = {quantity: 1, productId: id }
-        dispatch(addProductToCart({dto}))
-    }
+export default function CardProduct({ id, name, description, price, brand, image, quantity }: CardProduсtParams) {
+  const dispatch = useAppDispatch();
+  const { errors } = useUserCartSelector();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleAddProduct = () => {
+    const dto = { quantity: 1, productId: id }
+    dispatch(addProductToCart({ dto }))
+      .then(({ meta }) => {
+        if (meta.requestStatus !== 'rejected') {
+          handleOpen();
+        }
+      })
+  }
 
   return (
-      <Card sx={{ bgcolor: '#ab9689', padding: 3}}>
+    <>
+      <Card sx={{ width: 300, padding: 2, bgcolor: '#ab9689' }}>
         <CardMedia
-          sx={{     
-            width: 300,
+          component="img"
+          sx={{
             height: 300,
-            margin: '10px auto 0'
+            marginLeft: 'auto',
+            marginRight: 'auto'
           }}
-          image="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1916&q=80"
-          title="Product"
+          image={image}
+          title={name}
+          alt={name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h5" gutterBottom>
             {name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {description}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {price}
+            Brand: {brand}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {brand}
+            Price: {price}
           </Typography>
+          {
+            quantity &&
+            <Typography variant="body2" color="text.secondary">
+              Quantity: {quantity}
+            </Typography>
+          }
         </CardContent>
-        <CardActions>
-          <Button size="medium" sx={{color: 'black'}} onClick={handleAddProduct}>
-            <AddShoppingCartIcon/>
-          </Button>
-        </CardActions>
+        {!quantity && 
+          <CardActions>
+            <Button size="medium" sx={{ color: 'black' }} onClick={handleAddProduct}>
+              <AddShoppingCartIcon />
+            </Button>
+          </CardActions>
+        }
+        {errors.productInCart && <ErrorAlert title="Error" text={errors.productInCart} />}
       </Card>
+      {!quantity && 
+        <SuccessModalWindow 
+          text={'Product in your cart.'} 
+          handleClose={handleClose} 
+          isOpen={open}
+        />
+      }
+    </>
   );
 }

@@ -1,17 +1,24 @@
 import Grid from "@mui/material/Grid";
+import { useEffect } from "react";
+
+// ============== Redux ==============
+import { useAppDispatch } from "hooks/redux";
+import { getProducts } from "./store/products.actions";
+import { useProductsSelector } from "./store/products.selectors";
+
+// ============== Components ==============
 import AppBar from "components/app-bar.component";
 import AppButton from "components/app-button.component";
 import AppFooter from "components/app-footer.component";
 import AppIntroSection from "components/app-intro-section.component";
 import CardProduct from "components/card-product.component";
-import { useAppDispatch } from "hooks/redux";
-import { useEffect } from "react";
-import { getProducts } from "./store/products.actions";
-import { useProductsSelector } from "./store/products.selectors";
+import AppTextStatus from "components/app-text-status.component";
+import ErrorAlert from "components/error-alert.component";
+import Loading from "components/loading.component";
 
 export default function ProductsViewPage() {
   const dispatch = useAppDispatch();
-  const {products} = useProductsSelector();
+  const {products, pending, errors} = useProductsSelector();
 
   useEffect(() => {
       dispatch(getProducts());
@@ -29,23 +36,33 @@ export default function ProductsViewPage() {
       container
       sx={{
         display: 'flex',
-        justifyContent: 'space-around',
         flexWrap: 'wrap',
         gap: 3,
         padding: 5
       }}
     >
-      {products.map((product) => (
-        <CardProduct 
-          key={product.id}
-          id={product.id}
-          name={product.name}
-          description={product.description}
-          price={product.price}
-          brand={product.brand}
-          image={product.image}
-        />
-      ))}
+      {pending.products 
+        ?
+          <Loading/>
+        :
+          products.length !== 0
+          ?
+            products.map((product) => (
+            <CardProduct 
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              description={product.description}
+              price={product.price}
+              brand={product.brand}
+              image={product.image}
+              quantity={undefined}
+            />
+            ))
+          :
+            !errors.products && <AppTextStatus text="Sorry, there are no products available at the moment..."/>
+      }
+      { errors.products && <ErrorAlert title="Error" text={errors.products}/> }
       </Grid>
       <Grid container>
         <AppButton

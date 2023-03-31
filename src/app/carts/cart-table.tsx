@@ -1,4 +1,5 @@
-import * as React from 'react';
+import { useEffect, useState } from "react";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,61 +10,40 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {useAppDispatch} from "../../hooks/redux";
-import {useEffect} from "react";
-import {useUserCartSelector} from "./store/cart.selectors";
-import {deleteUserCart, getUserCart, updateProductQuantity} from "./store/cart.actions";
-import {Button, Grid, IconButton, Typography} from "@mui/material";
-import {UpdateProductType} from "./types/update-product-type";
-import {useNavigate} from "react-router-dom";
-import {createOrder} from "../orders/store/orders.actions";
-import {useOrderSelector} from "../orders/store/orders.selectors";
+import { useNavigate } from "react-router-dom";
 
+// ============== Redux ==============
+import { useAppDispatch } from "../../hooks/redux";
+import { useUserCartSelector } from "./store/cart.selectors";
+import { deleteUserCart, getUserCart, updateProductQuantity } from "./store/cart.actions";
+import { createOrder } from "../orders/store/orders.actions";
+import { useOrderSelector } from "../orders/store/orders.selectors";
 
+// ============== Types ==============
+import { UpdateProductType } from "./types/update-product-type";
 
-interface Column {
-    id: 'productName' | 'price' | 'quantity';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
+// ============== Constants ==============
+import { columns } from 'constants/cart-table-columns';
 
-const columns: readonly Column[] = [
-    {
-        id: 'productName',
-        label: 'Product',
-        minWidth: 170
-    },
-    {
-        id: 'price',
-        label: 'Price',
-        minWidth: 170,
-        align: 'right',
-        format: (value: number) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'quantity',
-        label: 'Quantity',
-        minWidth: 170,
-        align: 'right',
-        format: (value: number) => value.toLocaleString('en-US'),
-    },
-];
-
+// ============== Components ==============
+import ErrorAlert from "components/error-alert.component";
+import Loading from "components/loading.component";
+import { CartDtoType } from "./types/cart-dto.type";
 
 export default function CartTable() {
-
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const {userCart} = useUserCartSelector();
-    const {errors} = useOrderSelector();
-    const [totalPrice, setTotalPrice] = React.useState(0);
+    const { userCart, errors, pending } = useUserCartSelector();
+    const order = useOrderSelector();
+    const [updateTable, setUpdateTable] = useState(false);
+
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
         dispatch(getUserCart());
-
-    }, [dispatch])
+    }, [dispatch, updateTable])
 
     useEffect(() => {
         if (userCart) {
@@ -75,32 +55,21 @@ export default function CartTable() {
         }
     }, [userCart])
 
-    useEffect(() => {
-       if (errors.order)
-           alert(errors);
-    }, [errors])
-
     const handleOrder = () => {
         if (userCart?.length === 0 || !userCart)
             return;
-        const dto = {totalPrice: totalPrice};
-        dispatch(createOrder({dto}))
-            .then(({meta}) => {
+        const dto = { totalPrice: totalPrice };
+        dispatch(createOrder({ dto }))
+            .then(({ meta }) => {
                 if (meta.requestStatus !== 'rejected') {
-                    dispatch(deleteUserCart()).then(({meta}) => {
+                    dispatch(deleteUserCart()).then(({ meta }) => {
                         if (meta.requestStatus !== 'rejected') {
-                            navigate(0);
+                            setUpdateTable(!updateTable);
                         }
                     });
-
                 }
             })
     }
-
-
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -111,112 +80,154 @@ export default function CartTable() {
         setPage(0);
     };
 
+    const handleAddQuantity = (cart: CartDtoType) => {
+        const newQuantity = cart.quantity + 1;
+        const dto: UpdateProductType = { quantity: newQuantity, recordId: cart.id }
+        dispatch(updateProductQuantity({ dto }))
+            .then(({ meta }) => {
+                if (meta.requestStatus !== 'rejected') {
+                    setUpdateTable(!updateTable);
+                }
+            })
+    }
+
+    const handleRemoveQuantity = (cart: CartDtoType) => {
+        const newQuantity = cart.quantity - 1;
+        const dto: UpdateProductType = { quantity: newQuantity, recordId: cart.id }
+        dispatch(updateProductQuantity({ dto }))
+        .then(({ meta }) => {
+            if (meta.requestStatus !== 'rejected') {
+                setUpdateTable(!updateTable);
+            }
+        })
+    }
+
     return (
         <>
-            <Grid container sx={{marginBottom: 2}}>
-                <Typography variant="h6" gutterBottom sx={{marginLeft: 'auto', fontWeight: 'bold'}}>
-                    Total price: {totalPrice}
-                </Typography>
-            </Grid>
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth, fontWeight: 'bold' }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-
-                                <TableCell/>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {userCart?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((cart) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={cart.id}>
-                                            {columns.map((column) => {
-                                                if (column.id  == "productName") {
-                                                    const value = cart.products.name;
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
-                                                        </TableCell>
-                                                    );
-
-                                                }
-                                                if (column.id == "price") {
-                                                    const value = cart.products.price;
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
-                                                        </TableCell>
-                                                    );
-
-                                                }
-                                                if (column.id == "quantity") {
-                                                    const quantity = cart.quantity;
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof quantity === 'number'
-                                                                ? column.format(quantity)
-                                                                : quantity}
-                                                        </TableCell>
-                                                    );
-                                                }
-                                            })}
-                                            <TableCell style={{textAlign: 'center'}}>
-                                                <IconButton color="primary"
-                                                            onClick={() => {
-                                                                console.log('click')
-                                                                const newQuantity = cart.quantity + 1;
-                                                                const dto: UpdateProductType = {quantity: newQuantity, recordId: cart.id}
-                                                                dispatch(updateProductQuantity({dto}));
-                                                                navigate(0);
-                                                            }}
-                                                >
-                                                    <AddIcon/>
-                                                </IconButton>
-                                                <IconButton color="primary"
-                                                            onClick={() => {
-                                                                const newQuantity = cart.quantity - 1;
-                                                                const dto: UpdateProductType = {quantity: newQuantity, recordId: cart.id}
-                                                                dispatch(updateProductQuantity({dto}));
-                                                                navigate(0);
-                                                            }}
-                                                >
-                                                    <RemoveIcon/>
-                                                </IconButton>
+            {pending.userCart
+                ?
+                <Loading />
+                :
+                <>
+                    <Grid container sx={{ marginBottom: 2 }}>
+                        <Typography
+                            variant="h6"
+                            gutterBottom
+                            sx={{
+                                marginLeft: 'auto',
+                                fontWeight: 'bold'
+                            }}
+                        >
+                            Total price: {totalPrice}
+                        </Typography>
+                    </Grid>
+                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                        <TableContainer sx={{ maxHeight: 440 }}>
+                            <Table stickyHeader aria-label="sticky table">
+                                <TableHead>
+                                    <TableRow>
+                                        {columns.map((column) => (
+                                            <TableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                style={{ minWidth: column.minWidth, fontWeight: 'bold' }}
+                                            >
+                                                {column.label}
                                             </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[3, 5, 7]}
-                    component="div"
-                    count={userCart?.length ? userCart?.length : 5}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-            <Grid container>
-                <Button sx={{marginLeft: "auto", marginTop: '20px'}} variant="contained" onClick={handleOrder}>Make an order</Button>
-            </Grid>
+                                        ))}
+
+                                        <TableCell />
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {userCart?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((cart) => {
+                                            return (
+                                                <TableRow hover role="checkbox" tabIndex={-1} key={cart.id}>
+                                                    {columns.map((column) => {
+                                                        if (column.id === "productName") {
+                                                            const value = cart.products.name;
+                                                            return (
+                                                                <TableCell key={column.id} align={column.align}>
+                                                                    {column.format && typeof value === 'number'
+                                                                        ? column.format(value)
+                                                                        : value}
+                                                                </TableCell>
+                                                            );
+
+                                                        }
+                                                        if (column.id === "price") {
+                                                            const value = cart.products.price;
+                                                            return (
+                                                                <TableCell key={column.id} align={column.align}>
+                                                                    {column.format && typeof value === 'number'
+                                                                        ? column.format(value)
+                                                                        : value}
+                                                                </TableCell>
+                                                            );
+
+                                                        }
+                                                        if (column.id === "quantity") {
+                                                            const quantity = cart.quantity;
+                                                            return (
+                                                                <TableCell key={column.id} align={column.align}>
+                                                                    {column.format && typeof quantity === 'number'
+                                                                        ? column.format(quantity)
+                                                                        : quantity}
+                                                                </TableCell>
+                                                            );
+                                                        }
+                                                    })}
+                                                    <TableCell style={{ textAlign: 'center' }}>
+                                                        <IconButton color="primary"
+                                                            onClick={() => {
+                                                                handleAddQuantity(cart)
+                                                            }}
+                                                        >
+                                                            <AddIcon />
+                                                        </IconButton>
+                                                        <IconButton color="primary"
+                                                            onClick={() => {
+                                                                handleRemoveQuantity(cart)
+                                                            }}
+                                                        >
+                                                            <RemoveIcon />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            rowsPerPageOptions={[3, 5, 7]}
+                            component="div"
+                            count={userCart?.length ? userCart?.length : 5}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Paper>
+                    <Grid container>
+                        <Button 
+                            sx={{ 
+                                marginLeft: "auto", 
+                                marginTop: '20px',
+                                color: 'white', 
+                                bgcolor: '#6e5f55'
+                            }} 
+                            variant="contained" 
+                            onClick={handleOrder}
+                        >
+                            Make an order
+                        </Button>
+                    </Grid>
+                </>
+            }
+            {order.errors.order && <ErrorAlert title="Error" text={order.errors.order} />}
+            {errors.userCart && <ErrorAlert title="Error" text={errors.userCart} />}
         </>
     );
 }

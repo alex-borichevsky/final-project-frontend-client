@@ -1,5 +1,9 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+
+// ============== Repositories ==============
 import repository from "../../../repository";
+
+// ============== Types ==============
 import { AuthDto } from "../types/auth-dto.type";
 import { RegistrationDto } from "../types/registration-dto.type";
 import { SignInDto } from "../types/sign-in-dto.type";
