@@ -1,8 +1,10 @@
-import {CategoryState} from "../../categories/types/category-state.type";
 import {createSlice} from "@reduxjs/toolkit";
-import {getCategories} from "../../categories/store/categories.actions";
+
+// ============== Types ==============
 import {OrderStateType} from "../types/order-state.type";
-import {getUserOrders} from "./orders.actions";
+
+// ============== Actions ==============
+import {createOrder, getUserOrders} from "./orders.actions";
 
 const initialState: OrderStateType = {
     orders: [],
@@ -23,17 +25,31 @@ const orderSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // ============== Get user orders ==============
             .addCase(getUserOrders.pending, (state) => {
-                state.pending.order = true;
-                state.errors.order = null;
+                state.pending.orders = true;
+                state.errors.orders = null;
             })
             .addCase(getUserOrders.fulfilled, (state, { payload }) => {
-                state.pending.order = false;
+                state.pending.orders = false;
                 state.orders = payload;
             })
             .addCase(getUserOrders.rejected, (state, action: any & { payload: any }) => {
+                state.pending.orders = false;
+                state.errors.orders = action.payload;
+            })
+            // ============== Get user orders ==============
+            .addCase(createOrder.pending, (state) => {
+                state.pending.order = true;
+                state.errors.order = null;
+            })
+            .addCase(createOrder.fulfilled, (state, { payload }) => {
                 state.pending.order = false;
-                state.errors.order = action.payload.message;
+                state.order = payload;
+            })
+            .addCase(createOrder.rejected, (state, action: any & { payload: any }) => {
+                state.pending.order = false;
+                state.errors.order = action.payload;
             })
     },
 });
