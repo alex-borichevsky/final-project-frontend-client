@@ -1,6 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
+
+// ============ Types =========================
 import {UserInfoState} from "../types/user-info-state.type";
-import {UserInfoDto} from "../types/user-info-dto.type";
+
+// ============ Actions =========================
 import {getUserInfo, updateUserInfo} from "./users.actions";
 
 const initialState: UserInfoState = {
@@ -19,6 +22,7 @@ const userInfoSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+        // ============ Get user info =========================
             .addCase(getUserInfo.pending, (state) => {
                 state.pending.userInfo = true;
                 state.errors.userInfo = null;
@@ -29,8 +33,9 @@ const userInfoSlice = createSlice({
             })
             .addCase(getUserInfo.rejected, (state, action: any & { payload: any }) => {
                 state.pending.userInfo = false;
-                state.errors.userInfo = action.payload.message;
+                state.errors.userInfo = action.payload;
             })
+            // ============ Update user info =========================
             .addCase(updateUserInfo.pending, (state) => {
                 state.pending.userInfo = true;
                 state.errors.userInfo = null;
@@ -41,7 +46,7 @@ const userInfoSlice = createSlice({
             })
             .addCase(updateUserInfo.rejected, (state, action: any & { payload: any }) => {
                 state.pending.userInfo = false;
-                state.errors.userInfo = action.payload.message;
+                state.errors.userInfo = action.payload;
             })
     }
 });
