@@ -128,6 +128,7 @@ export default function CartTable() {
                                     <TableRow>
                                         {columns.map((column) => (
                                             <TableCell
+                                            data-testid='cell'
                                                 key={column.id}
                                                 align={column.align}
                                                 style={{ minWidth: column.minWidth, fontWeight: 'bold' }}
@@ -143,7 +144,7 @@ export default function CartTable() {
                                     {userCart?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((cart) => {
                                             return (
-                                                <TableRow hover role="checkbox" tabIndex={-1} key={cart.id}>
+                                                <TableRow hover role="checkbox" tabIndex={-1} key={cart.id} data-testid= 'tblrow'>
                                                     {columns.map((column) => {
                                                         if (column.id === "productName") {
                                                             const value = cart.products.name;
@@ -180,6 +181,7 @@ export default function CartTable() {
                                                     })}
                                                     <TableCell style={{ textAlign: 'center' }}>
                                                         <IconButton color="primary"
+                                                        data-testid='addQuantity'
                                                             onClick={() => {
                                                                 handleAddQuantity(cart)
                                                             }}

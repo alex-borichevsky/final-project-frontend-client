@@ -15,18 +15,17 @@ import Loading from "components/loading.component";
 // ============== Types ==============
 import { CategoryProductsProps } from "./types/category-products-props.type";
 
-export default function CategoryProducts({categoryId} : CategoryProductsProps) {
+export default function CategoryProducts({ categoryId }: CategoryProductsProps) {
   const dispatch = useAppDispatch();
-  const {products, pending, errors} = useProductsSelector();
+  const { products, pending, errors } = useProductsSelector();
 
   useEffect(() => {
     if (categoryId) {
-      dispatch(getProductsByCategoryId({categoryId: categoryId}));
+      dispatch(getProductsByCategoryId({ categoryId: categoryId }));
     }
   }, [categoryId])
-
   return (
-    <Grid 
+    <Grid
       container
       sx={{
         display: 'flex',
@@ -38,27 +37,29 @@ export default function CategoryProducts({categoryId} : CategoryProductsProps) {
     >
       {
         pending.products
-        ?
-          <Loading/>
-        :
-          products.length !== 0
           ?
-            products.map((product) => (
-              <CardProduct
-                id={product.id}
-                key={product.id}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                brand={product.brand}
-                image={product.image}
-                quantity={undefined}
-              />
-            ))
+          <Loading />
           :
-            !errors.products && <AppTextStatus text="No products in this category..."/>
+          products.length !== 0
+            ?
+            products.map((product) => (
+              <div data-testid='cardProd' key={product.id}>
+                <CardProduct
+                  id={product.id}
+                  key={product.id}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  brand={product.brand}
+                  image={product.image}
+                  quantity={product.quantity}
+                />
+              </div>
+            ))
+            :
+            !errors.products && <AppTextStatus text="No products in this category..." />
       }
-      { errors.products && <ErrorAlert title="Error" text={errors.products}/> }
+      {errors.products && <ErrorAlert title="Error" text={errors.products} />}
     </Grid>
   )
 }
