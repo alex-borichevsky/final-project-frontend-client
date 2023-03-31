@@ -193,26 +193,10 @@ const UserInfoForm = () => {
                   Save
                 </Button>
               </Box>
-              <Grid container>
-                <Grid
-                  container
-                  item
-                  sx={{ marginTop: '30px' }}
-                >
-                  <Link
-                    href="/"
-                    style={{
-                      textDecoration: 'none',
-                      color: 'white'
-                    }}
-                  >
-                  </Link>
-                </Grid>
-              </Grid>
+              { userInfo.errors.userInfo && <ErrorAlert title="Error" text={userInfo.errors.userInfo}/> }
             </Box>
           </Grid>
       }
-      { userInfo.errors.userInfo && <ErrorAlert title="Error" text={userInfo.errors.userInfo}/> }
     </Grid>
   )
 }

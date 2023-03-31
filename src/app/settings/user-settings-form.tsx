@@ -146,29 +146,13 @@ const UserSettingsForm = () => {
                             >
                                 Save
                             </Button>
-                            <Grid container>
-                                <Grid
-                                    container
-                                    item
-                                    sx={{marginTop: '30px'}}
-                                >
-                                    <Link
-                                        href="/"
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: 'white'
-                                        }}
-                                    >
-                                    </Link>
-                                </Grid>
-                            </Grid>
+                            { settings.errors.userSettings && 
+                                <ErrorAlert title="Error" text={settings.errors.userSettings}/> 
+                            }
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
-            { settings.errors.userSettings && 
-                <ErrorAlert title="Error" text={settings.errors.userSettings}/> 
-            }
         </>
     )
 }
