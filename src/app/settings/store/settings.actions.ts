@@ -1,6 +1,9 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+
+// ============ Repository =========================
 import repository from "../../../repository";
-import jwt_decode from "jwt-decode";
+
+// ============ Types =========================
 import {UpdateUserPasswordDtoType} from "../types/update-user-password-dto.type";
 
 const headers = {

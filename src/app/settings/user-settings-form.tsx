@@ -1,4 +1,3 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import {
     Box,
     Button,
@@ -9,14 +8,24 @@ import {
     Typography,
     Link,
 } from '@mui/material';
+
+// ============ Redux =========================
 import { useAppDispatch } from 'hooks/redux';
-import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { updateUserPassword } from './store/settings.actions';
+import { useUserSettingsSelector } from './store/settings.selectors';
+
+// ============ Yup =========================
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { UpdateUserPasswordDtoType } from './types/update-user-password-dto.type';
 import { schemaUpdatePassword } from './user-settings-schema.yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+// ============ Components =========================
+import ErrorAlert from 'components/error-alert.component';
 
 const UserSettingsForm = () => {
     const dispatch = useAppDispatch();
+    const settings = useUserSettingsSelector();
     
     const {
         handleSubmit,
@@ -43,119 +52,124 @@ const UserSettingsForm = () => {
     }
 
     return (
-        <Grid container sx={{justifyContent: 'center'}}>
-            <CssBaseline />
-            <Grid
-                item
-                xs={12}
-                sm={8}
-                md={5}
-                component={Paper}
-                elevation={6}
-                square
-            >
-                <Box
-                    sx={{
-                        my: 8,
-                        mx: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
+        <>
+            <Grid container sx={{justifyContent: 'center'}}>
+                <CssBaseline />
+                <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={5}
+                    component={Paper}
+                    elevation={6}
+                    square
                 >
-                    <Typography component="h1" variant="h5">
-                        Change password
-                    </Typography>
                     <Box
-                        component="form"
-                        noValidate
-                        onSubmit={handleSubmit(handleSubmitForm)}
-                        sx={{ mt: 1 }}
+                        sx={{
+                            my: 8,
+                            mx: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
                     >
-                        <Controller
-                            name="currentPassword"
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <TextField
-                                helperText={errors.currentPassword ? `${errors.currentPassword.message}`: ''}
-                                margin="normal"
-                                label="Current Password"
-                                fullWidth
-                                id="currentPassword"
-                                type='password'
-                                value={value ? value : ''}
-                                onChange={onChange}
-                                error={errors.currentPassword ? true : false}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="newPassword"
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <TextField
-                                helperText={errors.newPassword ? `${errors.newPassword.message}`: ''}
-                                margin="normal"
-                                label="New Password"
-                                fullWidth
-                                id="newPassword"
-                                type='password'
-                                value={value ? value : ''}
-                                onChange={onChange}
-                                error={errors.newPassword ? true : false}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="confirmPassword"
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <TextField
-                                helperText={errors.confirmPassword ? `${errors.confirmPassword.message}`: ''}
-                                margin="normal"
-                                label="Confirm Password"
-                                fullWidth
-                                id="confirmPassword"
-                                type='password'
-                                value={value ? value : ''}
-                                onChange={onChange}
-                                error={errors.confirmPassword ? true : false}
-                                />
-                            )}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{
-                                mt: 3,
-                                mb: 2,
-                                borderRadius: '20px',
-                                backgroundColor: '#6e5f55'
-                            }}
+                        <Typography component="h1" variant="h5">
+                            Change password
+                        </Typography>
+                        <Box
+                            component="form"
+                            noValidate
+                            onSubmit={handleSubmit(handleSubmitForm)}
+                            sx={{ mt: 1 }}
                         >
-                            Save
-                        </Button>
-                        <Grid container>
-                            <Grid
-                                container
-                                item
-                                sx={{marginTop: '30px'}}
+                            <Controller
+                                name="currentPassword"
+                                control={control}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextField
+                                    helperText={errors.currentPassword ? `${errors.currentPassword.message}`: ''}
+                                    margin="normal"
+                                    label="Current Password"
+                                    fullWidth
+                                    id="currentPassword"
+                                    type='password'
+                                    value={value ? value : ''}
+                                    onChange={onChange}
+                                    error={errors.currentPassword ? true : false}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="newPassword"
+                                control={control}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextField
+                                    helperText={errors.newPassword ? `${errors.newPassword.message}`: ''}
+                                    margin="normal"
+                                    label="New Password"
+                                    fullWidth
+                                    id="newPassword"
+                                    type='password'
+                                    value={value ? value : ''}
+                                    onChange={onChange}
+                                    error={errors.newPassword ? true : false}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="confirmPassword"
+                                control={control}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextField
+                                    helperText={errors.confirmPassword ? `${errors.confirmPassword.message}`: ''}
+                                    margin="normal"
+                                    label="Confirm Password"
+                                    fullWidth
+                                    id="confirmPassword"
+                                    type='password'
+                                    value={value ? value : ''}
+                                    onChange={onChange}
+                                    error={errors.confirmPassword ? true : false}
+                                    />
+                                )}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    borderRadius: '20px',
+                                    backgroundColor: '#6e5f55'
+                                }}
                             >
-                                <Link
-                                    href="/"
-                                    style={{
-                                        textDecoration: 'none',
-                                        color: 'white'
-                                    }}
+                                Save
+                            </Button>
+                            <Grid container>
+                                <Grid
+                                    container
+                                    item
+                                    sx={{marginTop: '30px'}}
                                 >
-                                </Link>
+                                    <Link
+                                        href="/"
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'white'
+                                        }}
+                                    >
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                </Box>
+                </Grid>
             </Grid>
-        </Grid>
+            { settings.errors.userSettings && 
+                <ErrorAlert title="Error" text={settings.errors.userSettings}/> 
+            }
+        </>
     )
 }
 
