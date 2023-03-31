@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
-
+import { useState } from "react";
+import {NavLink} from "react-router-dom";
 import {
   Box,
   Toolbar,
@@ -22,8 +22,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LogoutIcon from '@mui/icons-material/Logout';
-import {Link} from "react-router-dom";
 
+// ============ Types =========================
+import { LayoutProps } from "types/layout-props.type";
 
 const drawerWidth = 240;
 
@@ -98,19 +99,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-type NavParams = {
-  icon: ReactNode;
-  text: string;
-  navigatePath: string;
-}
-
-type Props = {
-  children: ReactNode;
-  nav: Array<NavParams>;
-  title: string;
-};
-
-export default function Layout({ children, nav, title }: Props) {
+export default function Layout({ children, nav, title }: LayoutProps) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -126,7 +115,7 @@ export default function Layout({ children, nav, title }: Props) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{bgcolor: '#6e5f55'}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -143,9 +132,9 @@ export default function Layout({ children, nav, title }: Props) {
             {title}
           </Typography>
           <Grid item sx={{marginLeft: 'auto'}}>
-          <Link to="/app/auth/log-out" style={{color: 'white'}}>
+          <NavLink to="/app/auth/log-out" style={{color: 'white'}}>
             <LogoutIcon />
-          </Link>
+          </NavLink>
         </Grid>
         </Toolbar>
       </AppBar>
@@ -162,7 +151,8 @@ export default function Layout({ children, nav, title }: Props) {
         <Divider />
         <List>
           {nav.map((item) => (
-            <Link
+            <NavLink
+              key={item.navigatePath}
               to={item.navigatePath}
               style={{ textDecoration: "none", color: "black" }}
             >
@@ -193,7 +183,7 @@ export default function Layout({ children, nav, title }: Props) {
                   />
                 </ListItemButton>
               </ListItem>
-            </Link>
+            </NavLink>
           ))}
         </List>
         <Divider />
