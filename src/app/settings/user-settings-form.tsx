@@ -141,34 +141,22 @@ const UserSettingsForm = () => {
                                     mt: 3,
                                     mb: 2,
                                     borderRadius: '20px',
-                                    backgroundColor: '#6e5f55'
+                                    backgroundColor: '#6e5f55',
+                                    '&:hover': {
+                                        backgroundColor: '#998374',
+                                        color: 'white',
+                                    }
                                 }}
                             >
                                 Save
                             </Button>
-                            <Grid container>
-                                <Grid
-                                    container
-                                    item
-                                    sx={{marginTop: '30px'}}
-                                >
-                                    <Link
-                                        href="/"
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: 'white'
-                                        }}
-                                    >
-                                    </Link>
-                                </Grid>
-                            </Grid>
+                            { settings.errors.userSettings && 
+                                <ErrorAlert title="Error" text={settings.errors.userSettings}/> 
+                            }
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
-            { settings.errors.userSettings && 
-                <ErrorAlert title="Error" text={settings.errors.userSettings}/> 
-            }
         </>
     )
 }

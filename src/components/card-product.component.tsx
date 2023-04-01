@@ -12,6 +12,8 @@ import { useUserCartSelector } from "app/carts/store/cart.selectors";
 import ErrorAlert from "./error-alert.component";
 import SuccessModalWindow from "./success-modal-window.component";
 
+// ============== Cookies ==============
+import Cookies from "js-cookie";
 
 export default function CardProduct({ id, name, description, price, brand, image, quantity }: CardProduсtParams) {
   const dispatch = useAppDispatch();
@@ -65,7 +67,7 @@ export default function CardProduct({ id, name, description, price, brand, image
             </Typography>
           }
         </CardContent>
-        {!quantity && 
+        {!quantity && Cookies.get('access_token_client') &&
           <CardActions>
             <Button size="medium" sx={{ color: 'black' }} onClick={handleAddProduct}>
               <AddShoppingCartIcon />

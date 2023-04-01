@@ -33,7 +33,7 @@ export default function AppBar() {
       <MuiAppBar position="fixed" sx={{backgroundColor: '#6e5f55'}}>
         <MuiToolbar sx={{ justifyContent: 'space-between'}}>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            {Cookies.get('access_token') 
+            {Cookies.get('access_token_client') 
               ? 
               <>
                 <IconButton

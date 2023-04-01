@@ -59,6 +59,16 @@
     ]
   },
   "devDependencies": {
-    "@types/js-cookie": "^3.0.3"
+    "@types/js-cookie": "^3.0.3",
+    "@types/redux-mock-store": "^1.0.3",
+    "ts-jest": "^29.0.5"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
   }
 }

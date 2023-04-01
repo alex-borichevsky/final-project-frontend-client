@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 // ======= private route ======= //
 const PrivateRoute: FC<{ element: any }> = ({ element: Element }) => {
-    return Cookies.get('access_token') ? (
+    return Cookies.get('access_token_client') ? (
         <Suspense fallback={<div />}>
             <div><Element /></div>
         </Suspense>
