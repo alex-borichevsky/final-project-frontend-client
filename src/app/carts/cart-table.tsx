@@ -216,7 +216,11 @@ export default function CartTable() {
                                 marginLeft: "auto", 
                                 marginTop: '20px',
                                 color: 'white', 
-                                bgcolor: '#6e5f55'
+                                bgcolor: '#6e5f55',
+                                '&:hover': {
+                                    backgroundColor: '#998374',
+                                    color: 'white',
+                                }
                             }} 
                             variant="contained" 
                             onClick={handleOrder}

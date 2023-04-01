@@ -33,8 +33,8 @@ const authSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, { payload }) => {
                 state.pending.token = false;
                 state.token = payload;
-                Cookies.set('access_token', payload.access_token);
-                Cookies.set('expired_at', String(payload.expired_at));
+                Cookies.set('access_token_client', payload.access_token);
+                Cookies.set('expired_at_client', String(payload.expired_at));
             })
             .addCase(registerUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
@@ -48,8 +48,8 @@ const authSlice = createSlice({
             .addCase(signInUser.fulfilled, (state, { payload }) => {
                 state.pending.token = false;
                 state.token = payload;
-                Cookies.set('access_token', payload.access_token);
-                Cookies.set('expired_at', String(payload.expired_at));
+                Cookies.set('access_token_client', payload.access_token);
+                Cookies.set('expired_at_client', String(payload.expired_at));
             })
             .addCase(signInUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
@@ -63,9 +63,9 @@ const authSlice = createSlice({
             .addCase(logOutUser.fulfilled, (state, {payload}) => {
                 state.pending.token = false;
                 state.token = null;
-                    Cookies.remove('access_token');
-                    Cookies.remove('expired_at');
-                })
+                Cookies.remove('access_token_client');
+                Cookies.remove('expired_at_client');
+            })
             .addCase(logOutUser.rejected, (state, action: any & { payload: any }) => {
                 state.pending.token = false;
                 state.errors.token = action.payload;

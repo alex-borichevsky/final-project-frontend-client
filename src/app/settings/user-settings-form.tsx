@@ -141,7 +141,11 @@ const UserSettingsForm = () => {
                                     mt: 3,
                                     mb: 2,
                                     borderRadius: '20px',
-                                    backgroundColor: '#6e5f55'
+                                    backgroundColor: '#6e5f55',
+                                    '&:hover': {
+                                        backgroundColor: '#998374',
+                                        color: 'white',
+                                    }
                                 }}
                             >
                                 Save
